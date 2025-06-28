@@ -12,7 +12,8 @@ module decode (
 	RegSrc,
 	ALUControl,
 	Read3,
-	Post
+	Post,
+	wePostPre
 );
 	input wire [1:0] Op;
 	input wire [5:0] Funct;
@@ -28,6 +29,7 @@ module decode (
 	output reg [1:0] ALUControl;
 	output wire Read3;
 	output wire Post;
+	output wire wePostPre;
 	
 	reg [11:0] controls;
 	wire Branch;
@@ -36,29 +38,35 @@ module decode (
 		casex (Op)
 			2'b00:
 				if (Funct[5])
-					controls = 12'b000010100100;
+					controls = 13'b0000101001000;
 				else
-					controls = 12'b000000100100;
+					controls = 13'b0000001001000;
 			2'b01: // MEMORY
 				if (Funct[0]) // LOAD
-					controls = 12'b000111100000;
+					controls = 13'b0001111000000;
 				else begin// STORE
 				    if (Funct[5]) // store con registro
-				        controls = 12'b000101010010;
+				        controls = 12'b0001010100100;
                     else // store con imm
-					    controls = 12'b100111010000;
+					    controls = 13'b1001110100000;
 					if (~Funct[1] && ~Funct[4]) begin
-					   controls[0] = 1; 
-					   controls[6] = 0;
-					   controls[5] = 1;
+					   controls[0] = 1;
+					   controls[1] = 1; 
+					   controls[7] = 0;
+					   controls[6] = 1;
+					end
+					else if (Funct[1] && Funct[4]) begin
+					   controls[0] = 1;
+					   controls[7] = 0;
+					   controls[6] = 1;
 					end
 			     end
-			2'b10: controls = 12'b011010001000;
-			default: controls = 12'bxxxxxxxxxxxx;
+			2'b10: controls = 13'b0110100010000;
+			default: controls = 13'bxxxxxxxxxxxxx;
 		endcase
 		
 		// 2 2 1 
-	assign {RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp, Read3, Post} = controls;
+	assign {RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp, Read3, Post, wePostPre} = controls;
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])

@@ -12,7 +12,8 @@ module controller (
 	MemtoReg,
 	PCSrc,
 	Read3,
-	Post
+	Post,
+	wePostPre
 );
 	input wire clk;
 	input wire reset;
@@ -28,6 +29,7 @@ module controller (
 	output wire PCSrc;
 	output wire Read3;
 	output wire Post;
+	output wire wePostPre;
 	
 	wire [1:0] FlagW;
 	wire PCS;
@@ -47,7 +49,8 @@ module controller (
 		.RegSrc(RegSrc),
 		.ALUControl(ALUControl),
 		.Read3(Read3),
-		.Post(Post)
+		.Post(Post),
+		.wePostPre(wePostPre)
 	);
 	condlogic cl(
 		.clk(clk),

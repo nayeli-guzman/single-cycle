@@ -9,14 +9,14 @@ module regfile (
 	rd1,
 	rd2,
 	rd3,
-	Post
+	wePostPre
 );
 	input wire clk;
 	input wire we3;
 	input wire [3:0] ra1;
 	input wire [3:0] ra2;
 	input wire [3:0] wa3;
-	input wire Post;
+	input wire wePostPre;
 	
 	input wire [31:0] wd3;
 	input wire [31:0] r15;
@@ -27,7 +27,7 @@ module regfile (
 	reg [31:0] rf [14:0];
 	always @(posedge clk)
 		if (we3) begin	
-		  if(Post)
+		  if(wePostPre)
 		      rf[ra1] <= wd3;
 		  else
        		  rf[wa3] <= wd3;

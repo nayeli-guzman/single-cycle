@@ -23,6 +23,7 @@ module arm (
 	wire MemtoReg;
 	wire PCSrc;
 	wire Read3;
+	wire wePostPre;
 	
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
@@ -41,7 +42,8 @@ module arm (
 		.MemtoReg(MemtoReg),
 		.PCSrc(PCSrc),
 		.Read3(Read3),
-		.Post(Post)
+		.Post(Post),
+		.wePostPre(wePostPre)
 	);
 	datapath dp(
 		.clk(clk),
@@ -60,6 +62,7 @@ module arm (
 		.WriteData(WriteData),
 		.ReadData(ReadData),
 		.Read3(Read3),
-		.Post(Post)
+		.Post(Post),
+		.wePostPre(wePostPre)
 	);
 endmodule

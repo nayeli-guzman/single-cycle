@@ -16,7 +16,8 @@ module datapath (
 	WriteData,
 	ReadData,
 	Read3,
-	Post
+	Post,
+	wePostPre
 );
 	input wire clk;
 	input wire reset;
@@ -29,6 +30,7 @@ module datapath (
 	input wire PCSrc;
 	input wire Read3;
 	input wire Post;
+	input wire wePostPre;
 	
 	output wire [3:0] ALUFlags;
 	output wire [31:0] PC;
@@ -97,7 +99,7 @@ module datapath (
 		.rd1(SrcA),           // RN
 		.rd2(RD2),      // RM
 		.rd3(SrcC),             // RD
-		.Post(Post)
+		.wePostPre(wePostPre)
 	);
 	mux2 #(32) resmux(
 		.d0(ALUResult),
